@@ -1,9 +1,9 @@
-# @pjblog/hooks
+# @pjblog/axios
 
-PJBlog主题辅助钩子集合。
+PJBlog request based with axios
 
 ## Usage 
 
 ```bash
-$ npm i @pjblog/cli
+$ npm i @pjblog/axios
 ```

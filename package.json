@@ -1,7 +1,7 @@
 {
   "name": "@pjblog/axios",
   "version": "1.0.0",
-  "description": "pjblog theme hooks",
+  "description": "pjblog axios support",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
   "exports": "./dist/index.es.js",
