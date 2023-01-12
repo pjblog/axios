@@ -26,3 +26,21 @@ export async function getBlogThemeConfigs<T extends Record<string, any> = {}>(op
   const res = await request.get<T>('/theme/configs', options);
   return res.data;
 }
+
+export function createDefaultBlogConfigsValue(): IConfigs {
+  return {
+    close: false,
+    description: null,
+    name: null,
+    theme: 'pjblog-theme-default',
+    article_size: 10,
+    keywords: null,
+    copyright: null,
+    icp: null,
+    domain: null,
+    favicon: null,
+    articles: 0,
+    reads: 0,
+    notice: null,
+  }
+}

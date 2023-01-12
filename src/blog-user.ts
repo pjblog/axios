@@ -62,3 +62,18 @@ export async function password(data: IPasswordBody, options: AxiosRequestConfig 
   const res = await request.put<number>('/password', data, options);
   return res.data;
 }
+
+export function createDefaultBlogMyInfoValue(): IUser {
+  return {
+    id: 0,
+    account: null,
+    nickname: null,
+    email: null,
+    avatar: null,
+    forbiden: false,
+    level: 1,
+    website: null,
+    gmt_create: new Date(),
+    gmt_modified: new Date(),
+  }
+}
