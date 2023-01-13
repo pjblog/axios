@@ -1,3 +1,4 @@
+export * from './config';
 export * from './axios';
 export * from './plugin';
 export * from './blog-configs';
