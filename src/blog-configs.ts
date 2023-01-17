@@ -17,8 +17,8 @@ export interface IConfigs {
   notice: string, // 网站公告
 }
 
-export async function getBlogConfigs(options: AxiosRequestConfig = {}) {
-  const res = await request.get<IConfigs>('/configs', options);
+export async function getBlogConfigs<T extends IConfigs = IConfigs>(options: AxiosRequestConfig = {}) {
+  const res = await request.get<T>('/configs', options);
   return res.data;
 }
 

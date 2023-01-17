@@ -10,7 +10,7 @@ export interface ICategory {
   outlink: string, // 外链地址
 }
 
-export async function getBlogCategories(options: AxiosRequestConfig = {}) {
-  const res = await request.get<ICategory[]>('/category', options);
+export async function getBlogCategories<T extends ICategory = ICategory>(options: AxiosRequestConfig = {}) {
+  const res = await request.get<T[]>('/category', options);
   return res.data;
 }

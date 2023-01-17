@@ -33,8 +33,8 @@ export interface IPasswordBody {
   newPassword: string, 
 }
 
-export async function getBlogMyInfo(options: AxiosRequestConfig = {}) {
-  const res = await request.get<IUser>('/me', options);
+export async function getBlogMyInfo<T extends IUser = IUser>(options: AxiosRequestConfig = {}) {
+  const res = await request.get<T>('/me', options);
   return res.data;
 }
 
