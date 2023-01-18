@@ -8,6 +8,13 @@ export interface IArticleSearchParams {
   page?: number,
 }
 
+export interface IArticleHeads {
+  id: string,
+  name: string,
+  level: number,
+  children?: IArticleHeads[],
+}
+
 export interface IAricleWithSummary {
   id: number; // 文章ID
   code: string; // 文章唯一编码
@@ -93,4 +100,71 @@ export async function getBlogArticles<T extends IAricleWithSummary = IAricleWith
 export async function getBlogArticleDetail<T extends IArticleWithHtml = IArticleWithHtml>(id: string, options: AxiosRequestConfig = {}) {
   const res = await request.get<T>('/article/' + id, options);
   return res.data;
+}
+
+export function createArticlesQueryString(params: IArticleSearchParams = {}) {
+  const { category, tag, keyword, page } = params;
+  const _params = {
+    category: category + '', 
+    tag: tag + '', 
+    keyword, 
+    page: page + '', 
+  }
+  if (!category) Reflect.deleteProperty(_params, 'category');
+  if (!tag) Reflect.deleteProperty(_params, 'tag');
+  if (!keyword) Reflect.deleteProperty(_params, 'keyword');
+  if (!page || page === 1) Reflect.deleteProperty(_params, 'page');
+  return _params;
+}
+
+export function createArticleHeadings(dataSource: IArticleHead[]): IArticleHeads[] {
+  if (!dataSource?.length) return [];
+  let level: number = dataSource[0].level;
+  const pools: IArticleHeads[] = [];
+  const indexs: number[] = [];
+
+  for (let i = 0; i < dataSource.length; i++) {
+    const chunk = dataSource[i];
+    const children = getHeadingByIndex(pools, indexs);
+
+    if (chunk.level > level) {
+      indexs.push(children.length - 1);
+      const _children = getHeadingByIndex(pools, indexs);
+      _children.push({
+        id: chunk.id,
+        name: chunk.text,
+        level: chunk.level,
+        children: [],
+      });
+    } else if (chunk.level < level) {
+      indexs.pop();
+      const _children = getHeadingByIndex(pools, indexs);
+      _children.push({
+        id: chunk.id,
+        name: chunk.text,
+        level: chunk.level,
+        children: [],
+      });
+    } else {
+      children.push({
+        id: chunk.id,
+        name: chunk.text,
+        level: chunk.level,
+        children: [],
+      });
+    }
+    
+    level = chunk.level;
+  }
+
+  return pools;
+}
+
+function getHeadingByIndex(pools: IArticleHeads[], indexs: number[]) {
+  if (!indexs.length) return pools;
+  let res = pools;
+  for (let i = 0; i < indexs.length; i++) {
+    res = res[indexs[i]].children;
+  }
+  return res;
 }
